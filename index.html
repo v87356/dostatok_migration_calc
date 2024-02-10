@@ -64,6 +64,22 @@
             word-break: break-all;
         }
 
+
+        #calculate_table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        #calculate_table th, #calculate_table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
     </style>
 </head>
 <body>
@@ -108,11 +124,11 @@
         </div>
 
 
-
+        <div id="tableWrapper" style="max-height: 400px; overflow: auto;">
             <table id="calculate_table">
 
             </table>
-
+        </div>
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 
