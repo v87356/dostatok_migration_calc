@@ -54,6 +54,12 @@
             color: white;
         }
 
+        #rodAddressWrapper {
+            max-width: 300px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
         #rodAddress {
             word-break: break-all;
         }
@@ -67,8 +73,11 @@
     <p>Данный калькулятор является приближенным к реальности. Если есть какие-то баги, пожалуйста, сообщите.</p>
     <p>У меня есть несколько старых премиум х100 и я не могу пока мигрировать по определенным причинам.</p>
     <p>Если у вас есть возможность, отправьте мне сколько-нибудь ROD в качестве благодарности и поддержки:</p>
-    <p id="rodAddress">rod1cxrsrhysu3y08t5yxgfxp03uktlk03p9cur80fdqjzg2f5gs82tqv8gjt0</p>
-    <button onclick="copyToClipboard()">Скопировать адрес ROD</button>
+    <div id="rodAddressWrapper">
+        <p id="rodAddress">rod1cxrsrhysu3y08t5yxgfxp03uktlk03p9cur80fdqjzg2f5gs82tqv8gjt0</p>
+        <button onclick="copyToClipboard()">Скопировать адрес ROD</button>
+    </div>
+
 
 
         <p>Цена ROD
