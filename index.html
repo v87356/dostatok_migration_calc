@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,11 +12,13 @@
         }
 
         input[type="number"] {
-            width: 100px;
+            width: 100%;
+            max-width: 200px; /* Устанавливаем максимальную ширину для удобства */
             padding: 5px;
             margin: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box; /* Учитываем внутренние отступы и границы в общей ширине */
         }
 
         button {
