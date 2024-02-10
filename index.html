@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #accounts {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #calculate_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #calculate_table, #calculate_table th, #calculate_table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        #calculate_table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #calculate_table {
+                overflow-x: auto;
+                display: block;
+            }
+
+            #calculate_table th, #calculate_table td {
+                min-width: 80px;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <p>Привет! Приготовил для вас калькулятор возможной прибыли при миграции из Премиум ботов.</p>
+    <p>Данный калькулятор является приближенным к реальности. Если есть какие-то баги, пожалуйста, сообщите.</p>
+    <p>У меня есть несколько старых премиум х100 и я не могу пока мигрировать по определенным причинам.</p>
+    <p>Если у вас есть возможность, отправьте мне сколько-нибудь ROD в качестве благодарности и поддержки:</p>
+    <p id="rodAddress">rod1cxrsrhysu3y08t5yxgfxp03uktlk03p9cur80fdqjzg2f5gs82tqv8gjt0</p>
+    <button onclick="copyToClipboard()">Скопировать адрес ROD</button>
+
+
+        <p>Цена ROD
+        <input type="number" id="rod_price" value="0.35">
+        <p>Цена GLZ
+        <input type="number" id="glz_price" value="0.0002">
+        <button type="button" onclick="calculate()">Рассчитать</button>
+        <p>
+ 
+        <div id="accounts">
+            <p>Сумма, которую вы потратили на Premium X1
+            <input type="number" id="premiumx1_spent" value="0" readonly>
+            <p>Сумма, которую вы потратили на Premium X10
+            <input type="number" id="premiumx10_spent" value="0" min="0">
+            <p>Сумма, которую вы потратили на Premium X100
+            <input type="number" id="premiumx100_spent" value="0" min="0">
+            <p>Сумма, которую вы потратили на Premium X1000
+            <input type="number" id="premiumx1000_spent" value="0" min="0">
+
+            <p>Сумма, которую вы потратили на ROD X10
+            <input type="number" id="x10_spent" value="0" readonly>
+            <p>Сумма, которую вы потратили на ROD X100
+            <input type="number" id="x100_spent" value="0" min="0">
+            <p>Сумма, которую вы потратили на ROD X1000
+             <input type="number" id="x1000_spent" value="0" min="0">
+             <p>Сумма, которую вы потратили на ROD X10000
+            <input type="number" id="x10000_spent" value="0" min="0">
+        </div>
+
+
+
+            <table id="calculate_table">
+
+            </table>
+
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+</body>
+
+
+<script>
+
+function calculate(){
+
+    const numInputs = document.querySelectorAll('input[type=number]')
+
+    numInputs.forEach(function(input) {
+    input.addEventListener('change', function(e) {
+        if (e.target.value == '') {
+        e.target.value = 0
+        }
+    })
+    })
+
+    var totalRodCount = 0;
+    var totalRodSum = 0;
+    var totalRodTotals = 0;
+    var totalGLZTotals = 0;
+
+    var totalSpentForGLZGame = 0;
+    var totalSpent = 0;
+
+    var glz_price = $("#glz_price").val();
+    var rod_price = $("#rod_price").val();
+
+    var premiumx1_spent = parseInt($("#premiumx1_spent").val());
+    var premiumx10_spent = parseInt($("#premiumx10_spent").val());
+    var premiumx100_spent = parseInt($("#premiumx100_spent").val());
+    var premiumx1000_spent = parseInt($("#premiumx1000_spent").val());
+
+    var x10_spent = parseInt($("#x10_spent").val());
+    var x100_spent = parseInt($("#x100_spent").val());
+    var x1000_spent = parseInt($("#x1000_spent").val());
+    var x10000_spent = parseInt($("#x10000_spent").val());
+
+    var randPremiumX1GLZCount = Math.floor(Math.random() * (4001 - 3500)) + 3500;
+    var randPremiumX1GLZSum = Math.floor(randPremiumX1GLZCount * glz_price);
+    var randPremiumX1RODCount = Math.floor(randPremiumX1GLZCount / 4.11);
+    var randPremiumX1RODSum = Math.floor(randPremiumX1RODCount * rod_price);
+    var randPremiumX1GLZTotal = randPremiumX1GLZSum - premiumx1_spent;
+    var randPremiumX1RODTotal = randPremiumX1RODSum - premiumx1_spent;
+
+    var randPremiumX10GLZCount = Math.floor(Math.random() * (40001 - 35000)) + 35000;
+    var randPremiumX10GLZSum = Math.floor(randPremiumX10GLZCount * glz_price);
+    var randPremiumX10RODCount = Math.floor(randPremiumX10GLZCount / 4.11);
+    var randPremiumX10RODSum = Math.floor(randPremiumX10RODCount * rod_price);
+    var randPremiumX10GLZTotal = randPremiumX10GLZSum - premiumx10_spent;
+    var randPremiumX10RODTotal = randPremiumX10RODSum - premiumx10_spent;
+
+
+    var randPremiumX100GLZCount = Math.floor(Math.random() * (400001 - 350000)) + 350000;
+    var randPremiumX100GLZSum = Math.floor(randPremiumX100GLZCount * glz_price);
+    var randPremiumX100RODCount = Math.floor(randPremiumX100GLZCount / 4.11);
+    var randPremiumX100RODSum = Math.floor(randPremiumX100RODCount * rod_price);
+    var randPremiumX100GLZTotal = randPremiumX100GLZSum - premiumx100_spent;
+    var randPremiumX100RODTotal = randPremiumX100RODSum - premiumx100_spent;
+
+
+    var randPremiumX1000GLZCount = Math.floor(Math.random() * (4000001 - 3500000)) + 3500000;
+    var randPremiumX1000GLZSum = Math.floor(randPremiumX1000GLZCount * glz_price);
+    var randPremiumX1000RODCount = Math.floor(randPremiumX1000GLZCount / 4.11);
+    var randPremiumX1000RODSum = Math.floor(randPremiumX1000RODCount * rod_price);
+    var randPremiumX1000GLZTotal = randPremiumX1000GLZSum - premiumx1000_spent;
+    var randPremiumX1000RODTotal = randPremiumX1000RODSum - premiumx1000_spent;
+
+    var randX10RODCount = Math.floor(Math.random() * (40 - 35)) + 35;
+    var randX10RODSum = Math.floor(randX10RODCount * rod_price);
+    var randX10RODTotal = randX10RODSum - x10_spent;
+
+    var randX100RODCount = Math.floor(Math.random() * (400 - 350)) + 350;
+    var randX100RODSum = Math.floor(randX100RODCount * rod_price);
+    var randX100RODTotal = randX100RODSum - x100_spent;
+
+    var randX1000RODCount = Math.floor(Math.random() * (4000 - 3500)) + 3500;
+    var randX1000RODSum = Math.floor(randX1000RODCount * rod_price);
+    var randX1000RODTotal = randX1000RODSum - x1000_spent;
+
+    var randX10000RODCount = Math.floor(Math.random() * (40000 - 35000)) + 35000;
+    var randX10000RODSum = Math.floor(randX10000RODCount * rod_price);
+    var randX10000RODTotal = randX10000RODSum - x10000_spent;
+
+    var html = `<tr>
+            <th></th>
+            <th colspan="4">Игра GLZ</th>
+            <th colspan="4">Игра ROD</th>
+        </tr>`
+    html += `<tr><td></td><td>Кол-во GLZ</td><td>GLZ => USD</td><td>Потрачено на бот</td><td>С вычетом расходов</td><td>Кол-во ROD</td><td>ROD => USD</td><td>Потрачено на бот</td><td>С вычетом расходов</td></tr>`;
+
+    html += `<tr>
+        <td>X1 Premium Bot</td>
+        <td>${randPremiumX1GLZCount}</td>
+        <td>${randPremiumX1GLZSum}</td>
+        <td>${premiumx1_spent}</td>
+        <td>${randPremiumX1GLZTotal}</td>
+        <td>${randPremiumX1RODCount}</td>
+        <td>${randPremiumX1RODSum}</td>
+        <td>${premiumx1_spent}</td>
+        <td>${randPremiumX1RODTotal}</td>
+        </tr>`;
+
+    totalRodCount += randPremiumX1RODCount;
+    totalRodSum += randPremiumX1RODSum;
+    totalRodTotals += randPremiumX1RODTotal;
+
+    totalGLZTotals += randPremiumX1GLZTotal; 
+
+    if(premiumx10_spent > 0){
+
+
+
+        html += `<tr>
+        <td>X10 Premium Bot</td>
+        <td>${randPremiumX10GLZCount}</td>
+        <td>${randPremiumX10GLZSum}</td>
+        <td>${premiumx10_spent}</td>
+        <td>${randPremiumX10GLZTotal}</td>
+        <td>${x100_spent == 0 ? 0 : randPremiumX10RODCount}</td>
+        <td>${x100_spent == 0 ? 0 : randPremiumX10RODSum}</td>
+        <td>${premiumx10_spent}</td>
+        <td>${x100_spent == 0 ? 0 - premiumx10_spent : randPremiumX10RODTotal }</td>
+        </tr>`;
+
+        if(x100_spent > 0 ){
+
+            totalRodCount += randPremiumX10RODCount;
+            totalRodSum += randPremiumX10RODSum;
+            totalRodTotals += randPremiumX10RODTotal;
+
+        }else{
+
+            totalRodTotals -= premiumx10_spent;
+
+        }
+        
+        console.log(totalRodTotals);
+        
+        totalSpentForGLZGame += premiumx10_spent;
+        totalSpent += premiumx10_spent;
+
+        totalGLZTotals += randPremiumX10GLZTotal;
+
+
+    }
+
+    if(premiumx100_spent > 0){
+
+        html += `<tr>
+            <td>X100 Premium Bot</td>
+            <td>${randPremiumX100GLZCount}</td>
+            <td>${randPremiumX100GLZSum}</td>
+            <td>${premiumx100_spent}</td>
+            <td>${randPremiumX100GLZTotal}</td>
+            <td>${x1000_spent == 0 ? 0 : randPremiumX100RODCount}</td>
+            <td>${x1000_spent == 0 ? 0 : randPremiumX100RODSum}</td>
+            <td>${premiumx100_spent}</td>
+            <td>${x1000_spent == 0 ? 0 - premiumx100_spent: randPremiumX100RODTotal}</td>
+            </tr>`;
+
+
+        if(x1000_spent > 0 ){
+            totalRodCount += randPremiumX100RODCount;
+            totalRodSum += randPremiumX100RODSum;
+            totalRodTotals += randPremiumX100RODTotal;
+
+        }else{
+
+        totalRodTotals -= premiumx100_spent;
+
+        }
+
+        totalSpentForGLZGame += premiumx100_spent;
+        totalSpent += premiumx100_spent;
+        totalGLZTotals += randPremiumX100GLZTotal;
+
+    }
+
+    if(premiumx1000_spent > 0){
+
+        html += `<tr>
+            <td>X1000 Premium Bot</td>
+            <td>${randPremiumX1000GLZCount}</td>
+            <td>${randPremiumX1000GLZSum}</td>
+            <td>${premiumx1000_spent}</td>
+            <td>${randPremiumX1000GLZTotal}</td>
+            <td>${x10000_spent == 0 ? 0 : randPremiumX1000RODCount}</td>
+            <td>${x10000_spent == 0 ? 0 : randPremiumX1000RODSum}</td>
+            <td>${premiumx1000_spent}</td>
+            <td>${x10000_spent == 0 ? 0 - premiumx1000_spent: randPremiumX1000RODTotal}</td>
+            </tr>`;
+
+        if(x10000_spent > 0 )
+        {
+            totalRodCount += randPremiumX1000RODCount;
+            totalRodSum += randPremiumX1000RODSum;
+            totalRodTotals += randPremiumX1000RODTotal;
+
+        }else{
+
+            totalRodTotals -= premiumx1000_spent;
+
+        }
+
+
+        totalSpentForGLZGame += premiumx1000_spent;
+        totalSpent += premiumx1000_spent;
+        totalGLZTotals += randPremiumX1000GLZTotal;
+
+    }
+
+
+
+    html += `<tr>
+        <td>X10 ROD Bot</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>${randX10RODCount}</td>
+        <td>${randX10RODSum}</td>
+        <td>${x10_spent}</td>
+        <td>${randX10RODTotal}</td>`;
+
+        totalSpent += x10_spent;
+        totalRodCount += randX10RODCount;
+        totalRodSum += randX10RODSum;
+        totalRodTotals += randX10RODTotal;
+
+
+    if(premiumx10_spent > 0 && x100_spent > 0){
+
+        html += `<tr>
+            <td>X100 ROD Bot</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>${randX100RODCount}</td>
+            <td>${randX100RODSum}</td>
+            <td>${x100_spent}</td>
+            <td>${randX100RODTotal}</td>
+            </tr>`;
+    
+            totalSpent += x100_spent;
+            totalRodCount += randX100RODCount;
+            totalRodSum += randX100RODSum;
+            totalRodTotals += randX100RODTotal;
+    }
+    
+    if(premiumx100_spent > 0 && x1000_spent > 0){
+
+        html += `<tr>
+            <td>X1000 ROD Bot</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>${randX1000RODCount}</td>
+            <td>${randX1000RODSum}</td>
+            <td>${x1000_spent}</td>
+            <td>${randX1000RODTotal}</td>
+            </tr>`;
+
+            totalSpent += x1000_spent;
+            totalRodCount += randX1000RODCount;
+            totalRodSum += randX1000RODSum;
+            totalRodTotals += randX1000RODTotal;
+    }
+
+    if(premiumx1000_spent > 0 && x10000_spent > 0){
+
+        html += `<tr>
+            <td>X10000 ROD Bot</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>${randX10000RODCount}</td>
+            <td>${randX10000RODSum}</td>
+            <td>${x10000_spent}</td>
+            <td>${randX10000RODTotal}</td>
+            </tr>`;
+
+            totalSpent += x10000_spent;
+            totalRodCount += randX10000RODCount;
+            totalRodSum += randX10000RODSum;
+            totalRodTotals += randX10000RODTotal;
+    }
+
+
+    html += `<tr>
+            <td>Итого</td>
+            <td></td>
+            <td></td>
+            <td>${totalSpentForGLZGame}</td>
+            <td>${totalGLZTotals}</td>
+            <td>${totalRodCount}</td>
+            <td>${totalRodSum}</td>
+            <td>${totalSpent}</td>
+            <td>${totalRodTotals}</td>
+            </tr>`;
+
+    $("#calculate_table").html(html)
+
+}
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function copyToClipboard() {
+        var rodAddressElement = document.getElementById('rodAddress');
+        var textArea = document.createElement('textarea');
+        textArea.value = rodAddressElement.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Адрес ROD скопирован в буфер обмена!');
+    }
+    // Your existing JavaScript code here
+</script>
+
+
+</html>
